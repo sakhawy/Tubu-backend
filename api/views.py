@@ -9,3 +9,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
 class VideoViewSet(viewsets.ModelViewSet):
 	queryset = models.Video.objects.all()
 	serializer_class = serializers.VideoSerializer
+
+class ChannelViewSet(viewsets.ModelViewSet):
+	queryset = models.Channel.objects.all()
+	serializer_class = serializers.ChannelSerializer
