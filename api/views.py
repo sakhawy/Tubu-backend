@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from api import models, serializers
+
+class PlaylistViewSet(viewsets.ModelViewSet):
+	queryset = models.Playlist.objects.all()
+	serializer_class = serializers.PlaylistSerializer
+
+class VideoViewSet(viewsets.ModelViewSet):
+	queryset = models.Video.objects.all()
+	serializer_class = serializers.VideoSerializer
