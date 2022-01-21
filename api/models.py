@@ -26,4 +26,4 @@ class Video(models.Model):
 	description = models.TextField()
 	username = models.CharField(max_length=30)
 	playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name="videos")
-	state = models.CharField(choices=STATE)
+	state = models.CharField(max_length=100, choices=STATE)
