@@ -39,7 +39,7 @@ class Video(models.Model):
 	src = models.URLField(blank=True, null=True)
 	description = models.TextField()
 	username = models.CharField(max_length=30)
-	playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name="videos")
+	playlists = models.ManyToManyField(Playlist, related_name="videos")
 	state = models.CharField(max_length=100, choices=STATE)
 
 	def __str__(self):
