@@ -48,11 +48,20 @@ class Youtube:
 	def fetch_videos(self, playlist_id):
 		assert self.validate_playlist_id(playlist_id)
 
-		videos = self.youtube.playlistItems().list(
-			part="contentDetails",
-			playlistId=playlist_id,
-			maxResults=50,
-			pageToken=None
-		)
+		# Get the videos given a playlist id (just the needed data)
+		playlist_items = self.api.playlistItems().list(
+			part="snippet",
+			playlistId=playlist_id
+		).execute()
+
+		videos = [
+			{
+				"id": item["snippet"]["resourceId"]["videoId"],
+				"title": item["snippet"]["title"],
+				"thumbnail": item["snippet"]["thumbnails"]["default"]["url"],
+				"description": item["snippet"]["description"],
+				"channel_name": item["snippet"]["videoOwnerChannelTitle"]
+			} for item in playlist_items["items"]
+		]
 
 		return videos

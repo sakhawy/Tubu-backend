@@ -17,7 +17,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
 		if channel_id:
 			# HACK: Get or create the channel
 			# TODO: Get from API
-			models.Channel.objects.get_or_create(id=channel_id, name="HACK")
+			models.Channel.objects.get_or_create(id=channel_id, name=channel_id)
 
 			# Talk to the API & save to DB
 			playlists = Youtube().fetch_playlists(channel_id)
@@ -37,7 +37,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
 					# Already exists
 					pass
 			
-			all_playlists = models.Playlist.objects.filter(channel_id=channel_id) 
+			all_playlists = models.Playlist.objects.filter(channel__id=channel_id) 
 			return Response(serializers.PlaylistSerializer(all_playlists, many=True).data, status=status.HTTP_200_OK)
 
 		else:
@@ -52,6 +52,36 @@ class VideoViewSet(viewsets.ModelViewSet):
 		# Fetch the videos of a given playlist from youtube
 		playlist_id = request.data.get("playlist_id", None)
 		if playlist_id:
-			return Response("Hi")
+			# Talk to the API & save to DB
+			videos = Youtube().fetch_videos(playlist_id)
+
+			for video in videos:
+				# Update playlist with custom fields
+
+				video = {
+					**video,
+					**{
+						"playlists": [
+							playlist_id
+						]
+					}
+				}
+
+				video_serializer = serializers.VideoSerializer(data=video)
+				if video_serializer.is_valid():
+					video = video_serializer.save()
+					
+					# Add the playlist
+					playlist = models.Playlist.objects.get(id=playlist_id)
+					video.playlists.add(playlist)
+					video.save()
+
+				else:
+					# Already exists
+					print(video_serializer.errors)
+
+			all_videos = models.Video.objects.filter(playlists__id=playlist_id) 
+			return Response(serializers.VideoSerializer(all_videos, many=True).data, status=status.HTTP_200_OK)
+
 		else:
 			return Response(status=status.HTTP_400_BAD_REQUEST)

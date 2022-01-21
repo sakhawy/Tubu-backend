@@ -37,10 +37,10 @@ class Video(models.Model):
 	title = models.CharField(max_length=100)
 	thumbnail = models.URLField()
 	src = models.URLField(blank=True, null=True)
-	description = models.TextField()
-	username = models.CharField(max_length=30)
-	playlists = models.ManyToManyField(Playlist, related_name="videos")
-	state = models.CharField(max_length=100, choices=STATE)
+	description = models.TextField(blank=True, null=True)
+	channel_name = models.CharField(max_length=30)
+	playlists = models.ManyToManyField(Playlist, blank=True, related_name="videos")
+	state = models.CharField(max_length=100, choices=STATE, default=ONLINE)
 
 	def __str__(self):
 		return self.title
