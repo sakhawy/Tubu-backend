@@ -14,7 +14,7 @@ class Playlist(models.Model):
 	id = models.CharField(max_length=100, primary_key=True)
 	title = models.CharField(max_length=100)
 	thumbnail = models.URLField(blank=True, null=True)
-	description = models.TextField()
+	description = models.TextField(blank=True, null=True)
 	is_synced = models.BooleanField(default=False)
 	channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name="playlists")
 
