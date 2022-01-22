@@ -55,7 +55,8 @@ class Youtube:
 		# Get the videos given a playlist id (just the needed data)
 		playlist_items = self.api.playlistItems().list(
 			part="snippet",
-			playlistId=playlist_id
+			playlistId=playlist_id,
+			maxResults=1000		# HACK: Instead of pagination, put a high number
 		).execute()
 
 		videos = [
