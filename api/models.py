@@ -38,7 +38,7 @@ class Video(models.Model):
 	thumbnail = models.URLField()
 	src = models.URLField(blank=True, null=True)
 	description = models.TextField(blank=True, null=True)
-	channel_name = models.CharField(max_length=30)
+	channel_name = models.CharField(max_length=100)
 	playlists = models.ManyToManyField(Playlist, blank=True, related_name="videos")
 	state = models.CharField(max_length=100, choices=STATE, default=ONLINE)
 

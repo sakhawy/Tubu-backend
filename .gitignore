@@ -8,3 +8,7 @@ venv
 __pycache__
 celerybeat-schedule
 dump.rdb
+
+# The media directory HAS TO BE PRESENT. Otherwise: Permission errors.
+media/*
+!media/.gitkeep
