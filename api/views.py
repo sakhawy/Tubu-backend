@@ -10,6 +10,15 @@ class PlaylistViewSet(viewsets.ModelViewSet):
 	queryset = models.Playlist.objects.all()
 	serializer_class = serializers.PlaylistSerializer
 
+	# OVERRIDING this method to get the channel's playlists (GET requests)
+	def get_queryset(self):
+		channel_id = self.request.query_params.get('channel_id', None)
+		queryset = models.Playlist.objects.all()
+		if channel_id:
+			queryset = queryset.filter(channel__id=channel_id)
+
+		return queryset
+
 	@action(methods=["post"], detail=False)
 	def fetch(self, request):
 		# Fetch the playlists of a given channel id from youtube
@@ -46,6 +55,15 @@ class PlaylistViewSet(viewsets.ModelViewSet):
 class VideoViewSet(viewsets.ModelViewSet):
 	queryset = models.Video.objects.all()
 	serializer_class = serializers.VideoSerializer
+
+	# OVERRIDING this method to get the playlists' videos (GET requests)
+	def get_queryset(self):
+		playlist_id = self.request.query_params.get('playlist_id', None)
+		queryset = models.Video.objects.all()
+		if playlist_id:
+			queryset = queryset.filter(playlists__id=playlist_id)
+
+		return queryset
 
 	@action(methods=["post"], detail=False)
 	def fetch(self, request):
