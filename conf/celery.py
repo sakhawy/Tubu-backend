@@ -42,12 +42,13 @@ def check_online_videos_task():
 
 	remaining_threads = settings.MAX_THREADS - len(downloading_qs)
 
-	if online_qs and remaining_threads > 0:
+	if remaining_threads > 0:
 		for _ in range(remaining_threads):
-			logger.info(f"{len(online_qs)} videos: 'ONLINE'. {len(downloading_qs)} videos: 'DOWNLOADING'. (MAX_THREADS: {settings.MAX_THREADS}).")
-			download_video_task.s(
-				online_qs.pop(0)
-			).apply_async()
+			if online_qs:
+				logger.info(f"{len(online_qs)} videos: 'ONLINE'. {len(downloading_qs)} videos: 'DOWNLOADING'. (MAX_THREADS: {settings.MAX_THREADS}).")
+				download_video_task.s(
+					online_qs.pop(0)
+				).apply_async()
 
 	else:
 		logger.info(f"{len(online_qs)} videos: 'ONLINE'. {len(downloading_qs)} videos: 'DOWNLOADING'. NOTHING TO BE DONE FOR NOW.")
