@@ -6,3 +6,5 @@ venv
 */migrations/*
 !*/migrations/__init__.py
 __pycache__
+celerybeat-schedule
+dump.rdb
