@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 	"rest_framework",
+	"corsheaders",
 
 	"api",
 ]
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+	"corsheaders.middleware.CorsMiddleware"
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -142,3 +144,5 @@ CELERY_TIMEZONE = "UTC"
 # DOWNLOAD MANAGER
 MAX_THREADS = 3
 PERIODIC_CHECK_INTERVAL = 100	# Every 100 seconds
+
+CORS_ALLOW_ALL_ORIGINS = True
